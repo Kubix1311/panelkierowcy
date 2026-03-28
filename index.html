@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Panel Kierowcy</title>
+<style>
+body {margin:0;font-family:Arial;background:#0d1117;color:#fff}
+.container {display:flex;justify-content:center;align-items:center;height:100vh}
+.login-box {background:#161b22;padding:30px;border-radius:12px;width:300px}
+input {width:100%;padding:10px;margin:10px 0;background:#0d1117;border:1px solid #30363d;color:#fff;border-radius:8px}
+button {width:100%;padding:10px;background:#2388ff;border:none;border-radius:8px;color:#fff;cursor:pointer}
+.panel {display:none;padding:20px}
+.cards {display:flex;gap:20px;flex-wrap:wrap}
+.card {background:#161b22;padding:20px;border-radius:12px;flex:1;min-width:350px;max-height:500px;overflow:auto}
+table {width:100%;border-collapse:collapse;font-size:11px}
+td,th {border:1px solid #30363d;padding:4px;text-align:center}
+h3 {margin-top:0;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div class="container" id="login">
+<div class="login-box">
+<h2>Logowanie</h2>
+<input id="user" placeholder="Nick Discord">
+<input id="pass" type="password" placeholder="Hasło">
+<button onclick="login()">Zaloguj</button>
+<p id="err"></p>
+</div>
+</div>
+
+<div class="panel" id="panel">
+<h2 id="welcome"></h2>
+<div class="cards">
+<div class="card" id="info"></div>
+<div class="card" id="vehicle"></div>
+<div class="card" id="schedule"></div>
+</div>
+</div>
+
+<script>
+// ZAKŁADANE TRASY DLA LUDZI 🚌🚊
+const stops3 = [
+  "Nowy Bieżanów P+R","Ćwiklińskiej","Nowy Prokocim","Teligi","Prokocim Szpital",
+  "Prokocim","Wlotowa","Bieżanowska","Kabel","Dworcowa","Cmentarz Podgórski",
+  "Podgórze SKA","Plac Bohaterów Getta","Dajwór"
+];
+
+const stops24 = [
+  "Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Podgórze SKA",
+  "Plac Bohaterów Getta","Dajwór"
+];
+
+const stops50 = [
+  "Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Plac Bohaterów Getta",
+  "Poczta Główna","Rondo Grzegórzeckie"
+];
+
+const stops143 = [
+  "Podgórze SKA","Dworcowa","Wielicka","Prokocim","Prokocim Szpital"
+];
+
+const stops709 = [
+  "Nowy Bieżanów P+R","Prokocim","Bieżanowska"
+];
+
+// UŻYTKOWNICY
+const users = {
+"Kubix":{pass:"aX91k2",linia:3,brygada:"3-01",pojazd:"Przydzielany",stops:stops3,start:0},
+"Dawid":{pass:"bT82Lp",linia:3,brygada:"3-02",pojazd:"NGT8",stops:stops3,start:5},
+"Vectron_adriatic":{pass:"cP92Ks",linia:3,brygada:"3-03",pojazd:"NGT8",stops:stops3,start:10},
+"martix":{pass:"fR55Mm",linia:3,brygada:"3-06",pojazd:"Konstal 102Na",stops:stops3,start:15},
+"Osk_aaaaaar":{pass:"hN22Az",linia:24,brygada:"24-02",pojazd:"Pesa 2014N",stops:stops24,start:0},
+"Abbadon":{pass:"iY88Pl",linia:24,brygada:"24-03",pojazd:"Pesa 2014N",stops:stops24,start:5},
+"donmateoplay2010":{pass:"jK33Ds",linia:24,brygada:"24-04",pojazd:"NGT6",stops:stops24,start:10},
+"Komunikacyjny_Mis":{pass:"KSCtbFC",linia:24,brygada:"24-01",pojazd:"Solaris Tramino S100",stops:stops24,start:0},
+"Itzz_Marek":{pass:"kZ66Xc",linia:50,brygada:"50-01",pojazd:"Pesa 2014N",stops:stops50,start:0},
+"kosiarka":{pass:"lQ99Rt",linia:50,brygada:"50-02",pojazd:"NGT8",stops:stops50,start:5},
+"IgOrMpK":{pass:"mV21Bn",linia:143,brygada:"143-01",pojazd:"Solaris Urbino 12",stops:stops143,start:0},
+"_kamil36782":{pass:"nC54Gh",linia:143,brygada:"143-02",pojazd:"Solaris Urbino 12",stops:stops143,start:5},
+"Wojciech":{pass:"oH73Lp",linia:709,brygada:"709-01",pojazd:"Solaris Urbino 12",stops:stops709,start:0}
+};
+
+// PRZERWY
+function getBreak(user, stop){
+    if((user.linia==3 || user.linia==24) && stop==="Dajwór") return 3;
+    if(user.linia==143 && stop==="Prokocim Szpital") return 3;
+    if(user.linia==709 && stop==="Bieżanowska") return 3;
+    return 10;
+}
+
+// HARMONOGRAM
+function generateFullSchedule(user){
+    let html="<table><tr><th>Godzina</th><th>Przystanek</th></tr>";
+    let time=19*60 + user.start;
+    while(time < 21*60){
+        for(let direction=0; direction<2; direction++){
+            let stops = direction===0 ? user.stops : [...user.stops].reverse();
+            for(let i=0;i<stops.length;i++){
+                if(time>=21*60) break;
+                html+=`<tr><td>${Math.floor(time/60).toString().padStart(2,'0')}:${(time%60).toString().padStart(2,'0')}</td><td>${stops[i]}</td></tr>`;
+                time++;
+            }
+            time += getBreak(user, stops[stops.length-1]);
+        }
+    }
+    html+="</table>";
+    return html;
+}
+
+// LOGOWANIE
+function login(){
+    let u=document.getElementById('user').value;
+    let p=document.getElementById('pass').value;
+    if(users[u] && users[u].pass===p){
+        document.getElementById('login').style.display='none';
+        document.getElementById('panel').style.display='block';
+        let user=users[u];
+        document.getElementById('welcome').innerText="Witaj "+u;
+        document.getElementById('info').innerHTML=`<h3>Informacje</h3>Linia: ${user.linia}<br>Brygada: ${user.brygada}`;
+        document.getElementById('vehicle').innerHTML=`<h3>Pojazd</h3>${user.pojazd}`;
+        document.getElementById('schedule').innerHTML="<h3>Pełny rozkład (19‑21)</h3>"+generateFullSchedule(user);
+    }else{
+        document.getElementById('err').innerText="Błędne dane";
+    }
+}
+</script>
+
+</body>
+</html>
