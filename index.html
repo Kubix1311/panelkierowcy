@@ -20,26 +20,24 @@ h3 {margin-top:0;margin-bottom:10px}
 <body>
 
 <div class="container" id="login">
-<div class="login-box">
-<h2>Logowanie</h2>
-<input id="user" placeholder="Nick Discord">
-<input id="pass" type="password" placeholder="Hasło">
-<button onclick="login()">Zaloguj</button>
-<p id="err"></p>
-</div>
+  <div class="login-box">
+    <h2>Logowanie</h2>
+    <input id="user" placeholder="Nick Discord">
+    <input id="pass" type="password" placeholder="Hasło">
+    <button onclick="login()">Zaloguj</button>
+    <p id="err"></p>
+  </div>
 </div>
 
 <div class="panel" id="panel">
-<h2 id="welcome"></h2>
-<div class="cards">
-<div class="card" id="info"></div>
-<div class="card" id="vehicle"></div>
-<div class="card" id="schedule"></div>
-</div>
+  <h2 id="welcome"></h2>
+  <div class="cards">
+    <div class="card" id="info"></div>
+    <div class="card" id="vehicle"></div>
+    <div class="card" id="schedule"></div>
+  </div>
 </div>
 
-<script>
-// Trasy
 <script>
 // Poprawione trasy
 const stops3 = ["Nowy Bieżanów P+R","Ćwiklińskiej","Nowy Prokocim","Teligi","Prokocim Szpital","Prokocim","Wlotowa","Bieżanowska","Kabel","Dworcowa","Cmentarz Podgórski","Podgórze SKA","Plac Bohaterów Getta","Dajwór"];
@@ -47,9 +45,8 @@ const stops24 = ["Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Podgórze 
 const stops50 = ["Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Plac Bohaterów Getta","Poczta Główna","Rondo Grzegórzeckie"];
 const stops143 = ["Bieżanowska","Kabel","Dworcowa","Cmentarz Podgórski","Podgórze SKA"];
 const stops709 = ["Nowy Bieżanów P+R","Ćwiklińskiej","Teligi","Prokocim Szpital","Wlotowa","Bieżanowska"];
-</script>
 
-// Użytkownicy z losowymi hasłami
+// Użytkownicy
 const users = {
 "Kubix":{pass:"aX91k2",linia:3,brygada:"3-01",pojazd:"Przydzielany",stops:stops3,start:0},
 "Dawid":{pass:"bT82Lp",linia:3,brygada:"3-02",pojazd:"NGT8",stops:stops3,start:5},
