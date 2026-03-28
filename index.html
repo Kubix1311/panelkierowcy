@@ -39,37 +39,21 @@ h3 {margin-top:0;margin-bottom:10px}
 </div>
 
 <script>
-// ZAKŁADANE TRASY DLA LUDZI 🚌🚊
-const stops3 = [
-  "Nowy Bieżanów P+R","Ćwiklińskiej","Nowy Prokocim","Teligi","Prokocim Szpital",
-  "Prokocim","Wlotowa","Bieżanowska","Kabel","Dworcowa","Cmentarz Podgórski",
-  "Podgórze SKA","Plac Bohaterów Getta","Dajwór"
-];
+// Trasy
+const stops3 = ["Nowy Bieżanów P+R","Ćwiklińskiej","Nowy Prokocim","Teligi","Prokocim Szpital","Prokocim","Wlotowa","Bieżanowska","Kabel","Dworcowa","Cmentarz Podgórski","Podgórze SKA","Plac Bohaterów Getta","Dajwór"];
+const stops24 = ["Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Podgórze SKA","Plac Bohaterów Getta","Dajwór"];
+const stops50 = ["Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Plac Bohaterów Getta","Poczta Główna","Rondo Grzegórzeckie"];
+const stops143 = ["Podgórze SKA","Dworcowa","Wielicka","Prokocim","Prokocim Szpital"];
+const stops709 = ["Nowy Bieżanów P+R","Prokocim","Bieżanowska"];
 
-const stops24 = [
-  "Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Podgórze SKA",
-  "Plac Bohaterów Getta","Dajwór"
-];
-
-const stops50 = [
-  "Kurdwanów P+R","Witosa","Nowosądecka","Dworcowa","Plac Bohaterów Getta",
-  "Poczta Główna","Rondo Grzegórzeckie"
-];
-
-const stops143 = [
-  "Podgórze SKA","Dworcowa","Wielicka","Prokocim","Prokocim Szpital"
-];
-
-const stops709 = [
-  "Nowy Bieżanów P+R","Prokocim","Bieżanowska"
-];
-
-// UŻYTKOWNICY
+// Użytkownicy z losowymi hasłami
 const users = {
 "Kubix":{pass:"aX91k2",linia:3,brygada:"3-01",pojazd:"Przydzielany",stops:stops3,start:0},
 "Dawid":{pass:"bT82Lp",linia:3,brygada:"3-02",pojazd:"NGT8",stops:stops3,start:5},
 "Vectron_adriatic":{pass:"cP92Ks",linia:3,brygada:"3-03",pojazd:"NGT8",stops:stops3,start:10},
-"martix":{pass:"fR55Mm",linia:3,brygada:"3-06",pojazd:"Konstal 102Na",stops:stops3,start:15},
+"Mariusz_Pierdzipompka":{pass:"Qw7X9d2R",linia:3,brygada:"3-04",pojazd:"Pesa 2014N",stops:stops3,start:15},
+"MPKKrakówMałopolska":{pass:"R8kL2zV5",linia:3,brygada:"3-05",pojazd:"Bombardier NGT8",stops:stops3,start:20},
+"martix":{pass:"T4fH6bX1",linia:3,brygada:"3-06",pojazd:"Konstal 102Na",stops:stops3,start:25},
 "Osk_aaaaaar":{pass:"hN22Az",linia:24,brygada:"24-02",pojazd:"Pesa 2014N",stops:stops24,start:0},
 "Abbadon":{pass:"iY88Pl",linia:24,brygada:"24-03",pojazd:"Pesa 2014N",stops:stops24,start:5},
 "donmateoplay2010":{pass:"jK33Ds",linia:24,brygada:"24-04",pojazd:"NGT6",stops:stops24,start:10},
@@ -81,7 +65,7 @@ const users = {
 "Wojciech":{pass:"oH73Lp",linia:709,brygada:"709-01",pojazd:"Solaris Urbino 12",stops:stops709,start:0}
 };
 
-// PRZERWY
+// Przerwy
 function getBreak(user, stop){
     if((user.linia==3 || user.linia==24) && stop==="Dajwór") return 3;
     if(user.linia==143 && stop==="Prokocim Szpital") return 3;
@@ -89,7 +73,7 @@ function getBreak(user, stop){
     return 10;
 }
 
-// HARMONOGRAM
+// Harmonogram
 function generateFullSchedule(user){
     let html="<table><tr><th>Godzina</th><th>Przystanek</th></tr>";
     let time=19*60 + user.start;
@@ -108,7 +92,7 @@ function generateFullSchedule(user){
     return html;
 }
 
-// LOGOWANIE
+// Logowanie
 function login(){
     let u=document.getElementById('user').value;
     let p=document.getElementById('pass').value;
